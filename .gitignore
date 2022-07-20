@@ -1,3 +1,8 @@
+# user
+*.log
+*.png
+geckodriver
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
