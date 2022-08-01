@@ -2,6 +2,7 @@
 *.log
 *.png
 geckodriver
+*.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

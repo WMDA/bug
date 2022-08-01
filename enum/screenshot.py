@@ -3,6 +3,8 @@ from selenium.webdriver.firefox.service import Service
 import os
 import re
 import argparse
+import sys
+from decouple import config
 
 def options() -> dict:
 
@@ -20,6 +22,7 @@ def options() -> dict:
 
     option = argparse.ArgumentParser()
     option.add_argument('-u', '--url', dest='url', help='url')
+    option.add_argument('-f', '--file', dest='file', help='file with url list in')
     arg = vars(option.parse_args())
     
     return arg
@@ -55,17 +58,18 @@ class Screenshot():
         Function to name png file
         '''
         png_file_strip = re.sub(r'htt.*//', '', self.url)
-        self.png_file = re.sub(r'\.','_', png_file_strip)
+        png_stip = re.sub(r'\n|\s', '', png_file_strip)
+        self.png_file = re.sub(r'\.','_', png_stip)
 
 
-    def filepaths(self):
+    def filepaths(self) -> None:
         
         '''
         Function to define file paths for driver, screenshot directory and log file
         '''
         
         self.geckodriver = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'drivers/geckodriver')
-        screen_shot_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'screenshots')
+        screen_shot_path = config('screenshots')
         self.png_path = f'{screen_shot_path}/{self.png_file}.png'
         self.log_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'logs')
 
@@ -86,8 +90,11 @@ class Screenshot():
         
 if __name__ == '__main__':
     args = options()
+
+    if args['file'] != None:
+        with open(args['file']) as file:
+            for line in file:
+                Screenshot(line)
+        sys.exit(0)
+    
     Screenshot(args['url'])
-
-
-
-

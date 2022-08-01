@@ -83,7 +83,7 @@ def parsing(json_file:dict) -> dict:
     
     return results
 
-def write_to_file(file_name:str, list_of_sub_domains:list) -> object:
+def write_to_file(file_name:str, list_of_sub_domains:list) -> None:
     
     '''
     Function to write lists to text files.
